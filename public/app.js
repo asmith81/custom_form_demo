@@ -8,7 +8,7 @@
 // ============================================
 
 // **IMPORTANT: Replace this with your Apps Script Web App URL**
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyH_68bPbgW1YDQKnPS2QhO-rOq6pWCTpq0LEzYUkQlKxf2fNuk-fWLwu4Uw88Mw5gI-w/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzZ50sbSBqcNYOXUoM4q_a4s-oQTficyDmABlVF-TCXAmHsIBmTelGLA_KVh43wkOnKZQ/exec';
 
 // ============================================
 // STATE MANAGEMENT
