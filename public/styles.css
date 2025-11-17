@@ -50,10 +50,23 @@ body[data-mode="outdoor"] .voice-btn:active {
     background-color: #dc2626;
 }
 
+/* Voice Input Info Banner */
+.voice-info-banner {
+    background-color: #eff6ff;
+    border-left: 4px solid #3b82f6;
+    color: #1e40af;
+}
+
 /* Indoor Mode (Optimized for Dim Lighting) */
 body[data-mode="indoor"] {
     background-color: #1f2937;
     color: #f3f4f6;
+}
+
+body[data-mode="indoor"] .voice-info-banner {
+    background-color: #1e3a8a;
+    border-left: 4px solid #60a5fa;
+    color: #bfdbfe;
 }
 
 body[data-mode="indoor"] header {
@@ -131,50 +144,18 @@ body[data-mode="indoor"] footer {
     position: relative;
 }
 
+/* Hide voice buttons - using keyboard dictation instead */
 .voice-btn {
-    position: absolute;
-    right: 0.5rem;
-    top: 0.5rem;
-    width: 3rem;
-    height: 3rem;
-    border-radius: 0.5rem;
-    font-size: 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.2s;
-    outline: none;
+    display: none;
 }
 
-.voice-btn:hover {
-    transform: scale(1.05);
-}
-
-.voice-btn:active {
-    transform: scale(0.95);
-}
-
-.voice-btn.recording {
-    animation: pulse 1s infinite;
-}
-
-@keyframes pulse {
-    0%, 100% {
-        opacity: 1;
-    }
-    50% {
-        opacity: 0.5;
-    }
-}
-
-/* Adjust textarea for voice button */
+/* Remove extra padding since voice buttons are hidden */
 .voice-input-wrapper textarea.form-input {
-    padding-right: 4rem;
+    padding-right: 1rem;
 }
 
 .voice-input-wrapper input.form-input {
-    padding-right: 4rem;
+    padding-right: 1rem;
 }
 
 /* Status Messages */
