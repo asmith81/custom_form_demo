@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#2563eb">
+    <meta name="description" content="Mobile-first jobsite documentation form">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Jobsite Form">
+    
+    <title>Jobsite Documentation Form</title>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📋</text></svg>">
+    
+    <!-- Tailwind CSS via CDN (for quick demo - consider building for production) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body class="min-h-screen transition-colors duration-300" data-mode="outdoor">
+    
+    <!-- Header with Mode Toggle -->
+    <header class="sticky top-0 z-50 bg-white border-b border-gray-300 shadow-sm">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-gray-900">📋 Jobsite Form</h1>
+            <button 
+                id="modeToggle" 
+                class="px-4 py-2 rounded-lg font-semibold text-sm transition-all focus:outline-none focus:ring-4 focus:ring-blue-300"
+                aria-label="Toggle indoor/outdoor mode">
+                ☀️ Outdoor
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Form -->
+    <main class="container mx-auto px-4 py-6 pb-24 max-w-2xl">
+        
+        <!-- Status Message -->
+        <div id="statusMessage" class="hidden mb-6 p-4 rounded-lg"></div>
+
+        <form id="jobsiteForm" class="space-y-6">
+            
+            <!-- Job Site -->
+            <div class="form-field">
+                <label for="jobSite" class="form-label">Job Site *</label>
+                <select 
+                    id="jobSite" 
+                    name="jobSite" 
+                    required
+                    class="form-input">
+                    <option value="">Select job site...</option>
+                </select>
+            </div>
+
+            <!-- Crew Member -->
+            <div class="form-field">
+                <label for="crewMember" class="form-label">Your Name *</label>
+                <select 
+                    id="crewMember" 
+                    name="crewMember" 
+                    required
+                    class="form-input">
+                    <option value="">Select your name...</option>
+                </select>
+            </div>
+
+            <!-- Trade/Task Type -->
+            <div class="form-field">
+                <label for="tradeType" class="form-label">Trade/Task Type *</label>
+                <select 
+                    id="tradeType" 
+                    name="tradeType" 
+                    required
+                    class="form-input">
+                    <option value="">Select trade...</option>
+                    <option value="Framing">Framing</option>
+                    <option value="Electrical">Electrical</option>
+                    <option value="Plumbing">Plumbing</option>
+                    <option value="HVAC">HVAC</option>
+                    <option value="Concrete">Concrete/Foundation</option>
+                    <option value="Drywall">Drywall</option>
+                    <option value="Painting">Painting</option>
+                    <option value="Roofing">Roofing</option>
+                    <option value="Inspection">Inspection</option>
+                    <option value="Cleanup">Cleanup</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+
+            <!-- Work Performed -->
+            <div class="form-field">
+                <label for="workPerformed" class="form-label">Work Performed *</label>
+                <div class="voice-input-wrapper">
+                    <textarea 
+                        id="workPerformed" 
+                        name="workPerformed"
+                        rows="3"
+                        required
+                        placeholder="Describe the work completed..."
+                        class="form-input resize-y"></textarea>
+                    <button 
+                        type="button" 
+                        class="voice-btn" 
+                        data-target="workPerformed"
+                        aria-label="Voice input for work performed">
+                        🎤
+                    </button>
+                </div>
+            </div>
+
+            <!-- Location on Site -->
+            <div class="form-field">
+                <label for="locationOnSite" class="form-label">Location on Site *</label>
+                <div class="voice-input-wrapper">
+                    <input 
+                        type="text" 
+                        id="locationOnSite" 
+                        name="locationOnSite"
+                        required
+                        placeholder="e.g., 2nd floor, unit 3A"
+                        class="form-input">
+                    <button 
+                        type="button" 
+                        class="voice-btn" 
+                        data-target="locationOnSite"
+                        aria-label="Voice input for location">
+                        🎤
+                    </button>
+                </div>
+            </div>
+
+            <!-- Status -->
+            <div class="form-field">
+                <label for="status" class="form-label">Status *</label>
+                <select 
+                    id="status" 
+                    name="status" 
+                    required
+                    class="form-input">
+                    <option value="">Select status...</option>
+                    <option value="Started">Started</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Issue/Blocker">Issue/Blocker</option>
+                </select>
+            </div>
+
+            <!-- Issues/Concerns -->
+            <div class="form-field">
+                <label for="issuesConcerns" class="form-label">Issues/Concerns</label>
+                <div class="voice-input-wrapper">
+                    <textarea 
+                        id="issuesConcerns" 
+                        name="issuesConcerns"
+                        rows="3"
+                        placeholder="Any issues or concerns? (optional)"
+                        class="form-input resize-y"></textarea>
+                    <button 
+                        type="button" 
+                        class="voice-btn" 
+                        data-target="issuesConcerns"
+                        aria-label="Voice input for issues">
+                        🎤
+                    </button>
+                </div>
+            </div>
+
+            <!-- Materials Used -->
+            <div class="form-field">
+                <label for="materialsUsed" class="form-label">Materials Used</label>
+                <div class="voice-input-wrapper">
+                    <textarea 
+                        id="materialsUsed" 
+                        name="materialsUsed"
+                        rows="3"
+                        placeholder="List materials used (one per line or comma-separated)"
+                        class="form-input resize-y"></textarea>
+                    <button 
+                        type="button" 
+                        class="voice-btn" 
+                        data-target="materialsUsed"
+                        aria-label="Voice input for materials used">
+                        🎤
+                    </button>
+                </div>
+            </div>
+
+            <!-- Materials Needed -->
+            <div class="form-field">
+                <label for="materialsNeeded" class="form-label">Materials Needed</label>
+                <div class="voice-input-wrapper">
+                    <textarea 
+                        id="materialsNeeded" 
+                        name="materialsNeeded"
+                        rows="3"
+                        placeholder="List materials needed (one per line or comma-separated)"
+                        class="form-input resize-y"></textarea>
+                    <button 
+                        type="button" 
+                        class="voice-btn" 
+                        data-target="materialsNeeded"
+                        aria-label="Voice input for materials needed">
+                        🎤
+                    </button>
+                </div>
+            </div>
+
+            <!-- Weather Conditions -->
+            <div class="form-field">
+                <label for="weatherConditions" class="form-label">Weather Conditions</label>
+                <div class="voice-input-wrapper">
+                    <input 
+                        type="text" 
+                        id="weatherConditions" 
+                        name="weatherConditions"
+                        placeholder="e.g., Sunny, 75°F (optional)"
+                        class="form-input">
+                    <button 
+                        type="button" 
+                        class="voice-btn" 
+                        data-target="weatherConditions"
+                        aria-label="Voice input for weather">
+                        🎤
+                    </button>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button 
+                type="submit" 
+                id="submitBtn"
+                class="w-full py-4 px-6 bg-blue-600 text-white font-bold text-lg rounded-lg shadow-lg hover:bg-blue-700 active:bg-blue-800 transition-colors focus:outline-none focus:ring-4 focus:ring-blue-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                Submit Report
+            </button>
+
+        </form>
+
+        <!-- Voice Recording Indicator -->
+        <div id="voiceIndicator" class="hidden fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-red-600 text-white px-6 py-3 rounded-full shadow-lg animate-pulse">
+            🎤 Listening...
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="fixed bottom-0 left-0 right-0 bg-gray-100 border-t border-gray-300 py-2 text-center text-xs text-gray-600">
+        <p>Tap 🎤 to use voice input • * Required fields</p>
+    </footer>
+
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(reg => console.log('Service Worker registered'))
+                    .catch(err => console.log('Service Worker registration failed:', err));
+            });
+        }
+    </script>
+
+    <!-- Main App Logic -->
+    <script src="/app.js"></script>
+
+</body>
+</html>
+
