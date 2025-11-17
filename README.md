@@ -5,12 +5,14 @@ A mobile-first Progressive Web App for jobsite documentation with voice-to-text 
 ## Features
 
 - 📱 Mobile-first, responsive design
-- 🎤 Voice-to-text input on every field (Web Speech API)
+- 🎙️ Voice-to-text via keyboard dictation
+- 📸 **Photo upload with automatic compression** (up to 10 photos)
 - ☀️ Outdoor mode (high contrast for bright sunlight)
 - 🌙 Indoor mode (optimized for dim lighting)
 - 🧤 Large touch targets for glove-friendly operation
 - 📴 PWA support for "Add to Home Screen"
 - 🔄 Real-time form submission to Google Sheets via Apps Script
+- ☁️ Photos automatically uploaded to Google Drive
 
 ## Setup
 
@@ -63,9 +65,22 @@ Apps Script Web App
 Google Sheets (normalized tables)
 ```
 
-## Phase 2 (Coming Soon)
+## Photo Upload
 
-- Bulk voice-to-text with LLM parsing
-- Photo capture and upload to Google Drive
+Photos are compressed client-side and uploaded to Google Drive automatically.
+
+See **[PHOTO_UPLOAD_SETUP.md](./PHOTO_UPLOAD_SETUP.md)** for detailed setup instructions.
+
+**Quick setup:**
+1. Copy code from `apps-script-with-photos.js`
+2. Paste into Apps Script `Code.gs`
+3. Deploy new version
+4. Test!
+
+## Phase 3 (Future Ideas)
+
+- Bulk voice-to-text with LLM parsing (Anthropic Claude)
+- LLM-based photo analysis and data extraction
 - Enhanced offline support with IndexedDB
+- GPS tagging for photos
 

@@ -238,6 +238,22 @@
                 </div>
             </div>
 
+            <!-- Photos -->
+            <div class="form-field">
+                <label for="photos" class="form-label">Photos</label>
+                <p class="text-sm text-gray-600 mb-2">Add up to 10 photos (will be compressed automatically)</p>
+                <input 
+                    type="file" 
+                    id="photos" 
+                    name="photos"
+                    accept="image/*"
+                    capture="environment"
+                    multiple
+                    class="form-input file-input">
+                <div id="photoPreview" class="photo-preview-grid mt-3"></div>
+                <p id="photoCount" class="text-sm text-gray-600 mt-2">0 photos selected</p>
+            </div>
+
             <!-- Submit Button -->
             <button 
                 type="submit" 

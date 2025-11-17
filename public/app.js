@@ -18,6 +18,7 @@ let recognition = null;
 let currentVoiceTarget = null;
 let jobSitesData = [];
 let crewMembersData = [];
+let selectedPhotos = []; // Array to store compressed photo data
 
 // ============================================
 // INITIALIZATION
@@ -28,6 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeVoiceRecognition();
     initializeVoiceButtons();
     initializeForm();
+    initializePhotoUpload();
     loadDropdownData();
 });
 
@@ -276,6 +278,7 @@ async function submitForm() {
             materialsUsed: document.getElementById('materialsUsed').value,
             materialsNeeded: document.getElementById('materialsNeeded').value,
             weatherConditions: document.getElementById('weatherConditions').value,
+            photos: selectedPhotos, // Include photos
             deviceInfo: getDeviceInfo()
         };
         
@@ -304,6 +307,10 @@ async function submitForm() {
         
         // Reset form
         form.reset();
+        
+        // Clear photos
+        selectedPhotos = [];
+        updatePhotoPreview();
         
         // Scroll to top
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -339,6 +346,127 @@ function showStatus(message, type = 'loading', duration = null) {
 function hideStatus() {
     const statusDiv = document.getElementById('statusMessage');
     statusDiv.classList.add('hidden');
+}
+
+// ============================================
+// PHOTO UPLOAD HANDLING
+// ============================================
+
+function initializePhotoUpload() {
+    const photoInput = document.getElementById('photos');
+    
+    photoInput.addEventListener('change', async (e) => {
+        const files = Array.from(e.target.files);
+        
+        if (files.length > 10) {
+            showStatus('Maximum 10 photos allowed', 'error', 3000);
+            photoInput.value = '';
+            return;
+        }
+        
+        showStatus(`Compressing ${files.length} photo(s)...`, 'loading');
+        
+        try {
+            // Compress and add each photo
+            for (const file of files) {
+                const compressed = await compressImage(file);
+                selectedPhotos.push(compressed);
+            }
+            
+            updatePhotoPreview();
+            hideStatus();
+            
+        } catch (error) {
+            console.error('Error processing photos:', error);
+            showStatus('Error processing photos. Please try again.', 'error', 3000);
+        }
+    });
+}
+
+async function compressImage(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        
+        reader.onload = (e) => {
+            const img = new Image();
+            
+            img.onload = () => {
+                // Create canvas for compression
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                
+                // Calculate new dimensions (max 1200px width)
+                let width = img.width;
+                let height = img.height;
+                const maxWidth = 1200;
+                
+                if (width > maxWidth) {
+                    height = (height * maxWidth) / width;
+                    width = maxWidth;
+                }
+                
+                canvas.width = width;
+                canvas.height = height;
+                
+                // Draw and compress
+                ctx.drawImage(img, 0, 0, width, height);
+                
+                // Convert to base64 (JPEG, 0.8 quality)
+                const compressedBase64 = canvas.toDataURL('image/jpeg', 0.8);
+                
+                resolve({
+                    name: file.name,
+                    data: compressedBase64,
+                    size: Math.round((compressedBase64.length * 3) / 4), // Approximate size in bytes
+                    timestamp: new Date().toISOString()
+                });
+            };
+            
+            img.onerror = () => reject(new Error('Failed to load image'));
+            img.src = e.target.result;
+        };
+        
+        reader.onerror = () => reject(new Error('Failed to read file'));
+        reader.readAsDataURL(file);
+    });
+}
+
+function updatePhotoPreview() {
+    const previewContainer = document.getElementById('photoPreview');
+    const photoCount = document.getElementById('photoCount');
+    
+    previewContainer.innerHTML = '';
+    
+    selectedPhotos.forEach((photo, index) => {
+        const previewItem = document.createElement('div');
+        previewItem.className = 'photo-preview-item';
+        
+        const img = document.createElement('img');
+        img.src = photo.data;
+        img.alt = photo.name;
+        
+        const removeBtn = document.createElement('button');
+        removeBtn.className = 'photo-preview-remove';
+        removeBtn.innerHTML = '×';
+        removeBtn.type = 'button';
+        removeBtn.onclick = () => removePhoto(index);
+        
+        previewItem.appendChild(img);
+        previewItem.appendChild(removeBtn);
+        previewContainer.appendChild(previewItem);
+    });
+    
+    photoCount.textContent = `${selectedPhotos.length} photo(s) selected`;
+}
+
+function removePhoto(index) {
+    selectedPhotos.splice(index, 1);
+    updatePhotoPreview();
+    
+    // Reset file input if no photos left
+    if (selectedPhotos.length === 0) {
+        document.getElementById('photos').value = '';
+    }
 }
 
 // ============================================

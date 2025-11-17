@@ -212,6 +212,87 @@ button {
     }
 }
 
+/* Photo Upload Styles */
+.file-input {
+    padding: 0.75rem;
+    cursor: pointer;
+    background-color: #f9fafb;
+}
+
+.file-input::-webkit-file-upload-button {
+    padding: 0.5rem 1rem;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    font-weight: 600;
+    margin-right: 1rem;
+}
+
+.file-input::-webkit-file-upload-button:hover {
+    background-color: #1d4ed8;
+}
+
+body[data-mode="indoor"] .file-input {
+    background-color: #374151;
+}
+
+body[data-mode="indoor"] .file-input::-webkit-file-upload-button {
+    background-color: #6366f1;
+}
+
+body[data-mode="indoor"] .file-input::-webkit-file-upload-button:hover {
+    background-color: #4f46e5;
+}
+
+/* Photo Preview Grid */
+.photo-preview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 0.75rem;
+}
+
+.photo-preview-item {
+    position: relative;
+    aspect-ratio: 1;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    border: 2px solid #e5e7eb;
+}
+
+body[data-mode="indoor"] .photo-preview-item {
+    border-color: #4b5563;
+}
+
+.photo-preview-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.photo-preview-remove {
+    position: absolute;
+    top: 0.25rem;
+    right: 0.25rem;
+    background-color: #ef4444;
+    color: white;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: bold;
+    border: 2px solid white;
+}
+
+.photo-preview-remove:hover {
+    background-color: #dc2626;
+}
+
 /* High Contrast Focus Indicators */
 *:focus {
     outline: none;
