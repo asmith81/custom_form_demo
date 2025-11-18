@@ -9,6 +9,11 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
+/* Utility Classes */
+.hidden {
+    display: none !important;
+}
+
 /* Mode Selector Buttons */
 .mode-selector {
     display: flex;

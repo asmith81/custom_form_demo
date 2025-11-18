@@ -213,10 +213,8 @@ async function loadDropdownData() {
         populateJobSitesDropdown();
         populateCrewMembersDropdown();
         
-        // Small delay to ensure dropdowns render before hiding status
-        setTimeout(() => {
-            hideStatus();
-        }, 100);
+        // Hide status immediately after dropdowns are populated
+        hideStatus();
         
     } catch (error) {
         console.error('Error loading dropdown data:', error);
@@ -342,20 +340,26 @@ async function submitForm() {
 function showStatus(message, type = 'loading', duration = null) {
     const statusDiv = document.getElementById('statusMessage');
     
-    statusDiv.textContent = message;
-    statusDiv.className = `mb-6 p-4 rounded-lg status-${type}`;
-    statusDiv.classList.remove('hidden');
-    
-    if (duration) {
-        setTimeout(() => {
-            hideStatus();
-        }, duration);
+    if (statusDiv) {
+        statusDiv.textContent = message;
+        statusDiv.className = `mb-6 p-4 rounded-lg status-${type}`;
+        statusDiv.classList.remove('hidden');
+        statusDiv.style.display = 'block'; // Clear any inline display:none
+        
+        if (duration) {
+            setTimeout(() => {
+                hideStatus();
+            }, duration);
+        }
     }
 }
 
 function hideStatus() {
     const statusDiv = document.getElementById('statusMessage');
-    statusDiv.classList.add('hidden');
+    if (statusDiv) {
+        statusDiv.classList.add('hidden');
+        statusDiv.style.display = 'none'; // Force hide with inline style as backup
+    }
 }
 
 // ============================================
