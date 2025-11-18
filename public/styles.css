@@ -118,6 +118,14 @@ body[data-mode="indoor"] footer {
     color: #9ca3af;
 }
 
+/* Desktop Container - Center and Limit Width */
+main.container {
+    width: 100%;
+    max-width: 42rem; /* 672px - optimal reading/form width */
+    margin-left: auto;
+    margin-right: auto;
+}
+
 /* Form Components */
 .form-field {
     margin-bottom: 1.5rem;
@@ -127,16 +135,38 @@ body[data-mode="indoor"] footer {
     display: block;
     font-size: 1rem;
     margin-bottom: 0.5rem;
+    font-weight: 600;
 }
 
 .form-input {
     width: 100%;
+    max-width: 100%; /* Ensure inputs don't overflow */
     padding: 0.875rem 1rem;
     font-size: 1.125rem;
     border-radius: 0.5rem;
     outline: none;
     transition: all 0.2s;
     min-height: 3rem; /* 48px - minimum touch target */
+    box-sizing: border-box; /* Include padding in width calculation */
+}
+
+/* Ensure selects match other inputs exactly */
+select.form-input {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 3rem;
+}
+
+body[data-mode="indoor"] select.form-input {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23f3f4f6' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+}
+
+/* Textarea specific sizing */
+textarea.form-input {
+    resize: vertical;
+    min-height: 6rem;
 }
 
 /* Voice Input Wrapper */
@@ -195,12 +225,13 @@ body[data-mode="indoor"] footer {
 }
 
 /* Large Touch Targets for Glove Use */
-select.form-input,
 button {
     min-height: 3rem; /* 48px minimum */
 }
 
-/* Prevent zoom on input focus (iOS Safari) */
+/* Responsive Adjustments */
+
+/* Mobile - Prevent zoom on input focus (iOS Safari) */
 @media screen and (max-width: 768px) {
     input[type="text"],
     input[type="number"],
@@ -209,6 +240,22 @@ button {
     textarea,
     select {
         font-size: 16px; /* Prevents iOS zoom */
+    }
+}
+
+/* Desktop - More breathing room */
+@media screen and (min-width: 769px) {
+    main.container {
+        padding-top: 2rem;
+        padding-bottom: 3rem;
+    }
+    
+    .form-field {
+        margin-bottom: 2rem;
+    }
+    
+    header {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
 }
 
