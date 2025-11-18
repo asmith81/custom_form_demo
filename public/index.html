@@ -24,16 +24,24 @@
 </head>
 <body class="min-h-screen transition-colors duration-300" data-mode="outdoor">
     
-    <!-- Header with Mode Toggle -->
+    <!-- Header with Mode Selector -->
     <header class="sticky top-0 z-50 bg-white border-b border-gray-300 shadow-sm">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
             <h1 class="text-xl font-bold text-gray-900">📋 Jobsite Form</h1>
-            <button 
-                id="modeToggle" 
-                class="px-4 py-2 rounded-lg font-semibold text-sm transition-all focus:outline-none focus:ring-4 focus:ring-blue-300"
-                aria-label="Toggle indoor/outdoor mode">
-                ☀️ Outdoor
-            </button>
+            <div class="mode-selector">
+                <button 
+                    id="outdoorModeBtn" 
+                    class="mode-btn mode-btn-active"
+                    aria-label="Outdoor mode (bright light)">
+                    ☀️ Outdoor
+                </button>
+                <button 
+                    id="indoorModeBtn" 
+                    class="mode-btn"
+                    aria-label="Indoor mode (dim light)">
+                    🌙 Indoor
+                </button>
+            </div>
         </div>
     </header>
 

@@ -34,35 +34,42 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ============================================
-// MODE TOGGLE (Indoor/Outdoor)
+// MODE SELECTOR (Indoor/Outdoor)
 // ============================================
 
 function initializeModeToggle() {
-    const modeToggle = document.getElementById('modeToggle');
+    const outdoorBtn = document.getElementById('outdoorModeBtn');
+    const indoorBtn = document.getElementById('indoorModeBtn');
     const body = document.body;
     
     // Load saved mode from localStorage
     const savedMode = localStorage.getItem('displayMode') || 'outdoor';
     setMode(savedMode);
     
-    modeToggle.addEventListener('click', () => {
-        const currentMode = body.getAttribute('data-mode');
-        const newMode = currentMode === 'outdoor' ? 'indoor' : 'outdoor';
-        setMode(newMode);
-        localStorage.setItem('displayMode', newMode);
+    outdoorBtn.addEventListener('click', () => {
+        setMode('outdoor');
+        localStorage.setItem('displayMode', 'outdoor');
+    });
+    
+    indoorBtn.addEventListener('click', () => {
+        setMode('indoor');
+        localStorage.setItem('displayMode', 'indoor');
     });
 }
 
 function setMode(mode) {
     const body = document.body;
-    const modeToggle = document.getElementById('modeToggle');
+    const outdoorBtn = document.getElementById('outdoorModeBtn');
+    const indoorBtn = document.getElementById('indoorModeBtn');
     
     body.setAttribute('data-mode', mode);
     
     if (mode === 'outdoor') {
-        modeToggle.textContent = '☀️ Outdoor';
+        outdoorBtn.classList.add('mode-btn-active');
+        indoorBtn.classList.remove('mode-btn-active');
     } else {
-        modeToggle.textContent = '🌙 Indoor';
+        indoorBtn.classList.add('mode-btn-active');
+        outdoorBtn.classList.remove('mode-btn-active');
     }
 }
 

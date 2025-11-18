@@ -9,6 +9,38 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
+/* Mode Selector Buttons */
+.mode-selector {
+    display: flex;
+    gap: 0.5rem;
+    background-color: #e5e7eb;
+    padding: 0.25rem;
+    border-radius: 2rem;
+}
+
+.mode-btn {
+    padding: 0.5rem 1.25rem;
+    border-radius: 1.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: all 0.2s;
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+    color: #6b7280;
+    min-width: 6rem;
+}
+
+.mode-btn:hover {
+    color: #374151;
+}
+
+.mode-btn-active {
+    background-color: #ffffff;
+    color: #000000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 /* Outdoor Mode (High Contrast for Bright Sunlight) */
 body[data-mode="outdoor"] {
     background-color: #ffffff;
@@ -18,11 +50,6 @@ body[data-mode="outdoor"] {
 body[data-mode="outdoor"] header {
     background-color: #ffffff;
     border-color: #000000;
-}
-
-body[data-mode="outdoor"] #modeToggle {
-    background-color: #fbbf24;
-    color: #000000;
 }
 
 body[data-mode="outdoor"] .form-label {
@@ -39,15 +66,6 @@ body[data-mode="outdoor"] .form-input {
 body[data-mode="outdoor"] .form-input:focus {
     border-color: #2563eb;
     box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.3);
-}
-
-body[data-mode="outdoor"] .voice-btn {
-    background-color: #2563eb;
-    border: 2px solid #000000;
-}
-
-body[data-mode="outdoor"] .voice-btn:active {
-    background-color: #dc2626;
 }
 
 /* Voice Input Info Banner */
@@ -108,14 +126,29 @@ body[data-mode="indoor"] .voice-btn {
     border: 2px solid #4b5563;
 }
 
-body[data-mode="indoor"] .voice-btn:active {
-    background-color: #dc2626;
-}
-
 body[data-mode="indoor"] footer {
     background-color: #374151;
     border-color: #4b5563;
     color: #9ca3af;
+}
+
+/* Indoor Mode - Mode Selector */
+body[data-mode="indoor"] .mode-selector {
+    background-color: #4b5563;
+}
+
+body[data-mode="indoor"] .mode-btn {
+    color: #9ca3af;
+}
+
+body[data-mode="indoor"] .mode-btn:hover {
+    color: #d1d5db;
+}
+
+body[data-mode="indoor"] .mode-btn-active {
+    background-color: #6366f1;
+    color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 /* Desktop Container - Center and Limit Width */
@@ -229,11 +262,12 @@ button {
     min-height: 3rem; /* 48px minimum */
 }
 
-/* Submit Button - Ensure Full Width */
+/* Submit Button - Ensure Full Width and More Rounded */
 #submitBtn {
     width: 100%;
     max-width: 100%;
     display: block;
+    border-radius: 1.5rem !important; /* More rounded */
 }
 
 /* Responsive Adjustments */
