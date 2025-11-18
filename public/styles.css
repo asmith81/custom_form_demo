@@ -229,6 +229,13 @@ button {
     min-height: 3rem; /* 48px minimum */
 }
 
+/* Submit Button - Ensure Full Width */
+#submitBtn {
+    width: 100%;
+    max-width: 100%;
+    display: block;
+}
+
 /* Responsive Adjustments */
 
 /* Mobile - Prevent zoom on input focus (iOS Safari) */
