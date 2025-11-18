@@ -86,33 +86,48 @@ function doPost(e) {
 
 function handlePhotoUpload(data) {
   try {
+    Logger.log('Starting photo upload...');
+    
     // Extract photo data
     const photoData = data.photo.data; // base64 string
     const photoName = data.photo.name;
     const timestamp = data.photo.timestamp;
     
+    Logger.log('Photo name: ' + photoName);
+    Logger.log('Photo data length: ' + photoData.length);
+    
     // Get folder
+    Logger.log('Getting photos folder...');
     const folder = getPhotosFolder();
+    Logger.log('Folder obtained: ' + folder.getName());
     
     // Extract base64 data (remove data:image/jpeg;base64, prefix)
     const base64Data = photoData.split(',')[1];
+    Logger.log('Base64 data length: ' + base64Data.length);
     
     // Convert base64 to blob
+    Logger.log('Converting to blob...');
     const blob = Utilities.newBlob(
       Utilities.base64Decode(base64Data),
       'image/jpeg',
       generatePhotoFileName(photoName, timestamp)
     );
+    Logger.log('Blob created, size: ' + blob.getBytes().length);
     
     // Upload to Google Drive
+    Logger.log('Uploading to Drive...');
     const file = folder.createFile(blob);
+    Logger.log('File created: ' + file.getName());
     
     // Make file accessible via link
+    Logger.log('Setting sharing permissions...');
     file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
     
     // Get shareable URL
     const fileUrl = file.getUrl();
     const fileId = file.getId();
+    
+    Logger.log('Upload complete! File ID: ' + fileId);
     
     return buildResponse({
       success: true,
@@ -122,7 +137,8 @@ function handlePhotoUpload(data) {
     });
     
   } catch (error) {
-    Logger.log('Error uploading photo: ' + error.toString());
+    Logger.log('ERROR in handlePhotoUpload: ' + error.toString());
+    Logger.log('Error stack: ' + error.stack);
     return buildResponse({
       success: false,
       error: error.toString()

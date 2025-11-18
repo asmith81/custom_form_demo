@@ -287,6 +287,11 @@ async function submitForm() {
                 // Upload photo
                 const photoUrl = await uploadPhotoToDrive(photo);
                 photoUrls.push(photoUrl);
+                
+                // Small delay between uploads to prevent Apps Script concurrency issues
+                if (i < selectedPhotos.length - 1) {
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                }
             }
         }
         
@@ -353,7 +358,7 @@ async function submitForm() {
     }
 }
 
-// Upload single photo to Drive
+// Upload single photo to Drive with timeout
 async function uploadPhotoToDrive(photo) {
     const uploadData = {
         action: 'uploadPhoto',
@@ -364,29 +369,38 @@ async function uploadPhotoToDrive(photo) {
         }
     };
     
-    const response = await fetch(APPS_SCRIPT_URL, {
+    // Create timeout promise (30 seconds)
+    const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error('Photo upload timeout (30s)')), 30000);
+    });
+    
+    // Create upload promise
+    const uploadPromise = fetch(APPS_SCRIPT_URL, {
         method: 'POST',
         headers: {
             'Content-Type': 'text/plain'
         },
         body: JSON.stringify(uploadData)
+    }).then(async (response) => {
+        if (!response.ok) {
+            throw new Error(`Photo upload failed: ${response.status}`);
+        }
+        
+        const result = await response.json();
+        
+        if (!result.success) {
+            throw new Error(result.error || 'Photo upload failed');
+        }
+        
+        return {
+            url: result.driveUrl,
+            name: result.fileName,
+            fileId: result.fileId
+        };
     });
     
-    if (!response.ok) {
-        throw new Error(`Photo upload failed: ${response.status}`);
-    }
-    
-    const result = await response.json();
-    
-    if (!result.success) {
-        throw new Error(result.error || 'Photo upload failed');
-    }
-    
-    return {
-        url: result.driveUrl,
-        name: result.fileName,
-        fileId: result.fileId
-    };
+    // Race between upload and timeout
+    return Promise.race([uploadPromise, timeoutPromise]);
 }
 
 // ============================================
