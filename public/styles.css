@@ -305,25 +305,55 @@ button {
     padding: 0.75rem;
     cursor: pointer;
     background-color: #f9fafb;
+    border: 2px dashed #d1d5db !important;
 }
 
 .file-input::-webkit-file-upload-button {
-    padding: 0.5rem 1rem;
+    padding: 0.625rem 1.5rem;
     background-color: #2563eb;
     color: white;
     border: none;
-    border-radius: 0.375rem;
+    border-radius: 1rem;
     cursor: pointer;
     font-weight: 600;
+    font-size: 0.875rem;
     margin-right: 1rem;
+    transition: all 0.2s;
 }
 
 .file-input::-webkit-file-upload-button:hover {
     background-color: #1d4ed8;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.file-input::-webkit-file-upload-button:active {
+    transform: translateY(0);
+}
+
+/* Firefox */
+.file-input::file-selector-button {
+    padding: 0.625rem 1.5rem;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 1rem;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.875rem;
+    margin-right: 1rem;
+    transition: all 0.2s;
+}
+
+.file-input::file-selector-button:hover {
+    background-color: #1d4ed8;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 body[data-mode="indoor"] .file-input {
     background-color: #374151;
+    border-color: #6b7280 !important;
 }
 
 body[data-mode="indoor"] .file-input::-webkit-file-upload-button {
@@ -331,6 +361,14 @@ body[data-mode="indoor"] .file-input::-webkit-file-upload-button {
 }
 
 body[data-mode="indoor"] .file-input::-webkit-file-upload-button:hover {
+    background-color: #4f46e5;
+}
+
+body[data-mode="indoor"] .file-input::file-selector-button {
+    background-color: #6366f1;
+}
+
+body[data-mode="indoor"] .file-input::file-selector-button:hover {
     background-color: #4f46e5;
 }
 
