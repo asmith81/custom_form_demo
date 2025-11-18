@@ -3,7 +3,7 @@
  * Caches static assets for offline availability
  */
 
-const CACHE_NAME = 'jobsite-form-v4';
+const CACHE_NAME = 'jobsite-form-v5';
 const ASSETS_TO_CACHE = [
     '/',
     '/index.html',
