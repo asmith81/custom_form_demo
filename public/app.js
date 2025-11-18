@@ -206,7 +206,10 @@ async function loadDropdownData() {
         populateJobSitesDropdown();
         populateCrewMembersDropdown();
         
-        hideStatus();
+        // Small delay to ensure dropdowns render before hiding status
+        setTimeout(() => {
+            hideStatus();
+        }, 100);
         
     } catch (error) {
         console.error('Error loading dropdown data:', error);
