@@ -3,7 +3,7 @@
  * Caches static assets for offline availability
  */
 
-const CACHE_NAME = 'jobsite-form-v2';
+const CACHE_NAME = 'jobsite-form-v3';
 const ASSETS_TO_CACHE = [
     '/',
     '/index.html',
@@ -24,6 +24,7 @@ self.addEventListener('install', (event) => {
             })
             .then(() => {
                 console.log('[Service Worker] Installed successfully');
+                // Skip waiting to activate new version immediately
                 return self.skipWaiting();
             })
     );
