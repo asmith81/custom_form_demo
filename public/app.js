@@ -269,13 +269,33 @@ async function submitForm() {
     
     // Disable submit button
     submitBtn.disabled = true;
-    submitBtn.innerHTML = '<span class="spinner"></span> Submitting...';
-    
-    showStatus('Submitting your report...', 'loading');
     
     try {
-        // Collect form data
+        // Step 1: Upload photos if any
+        let photoUrls = [];
+        
+        if (selectedPhotos.length > 0) {
+            submitBtn.innerHTML = '<span class="spinner"></span> Uploading photos...';
+            
+            for (let i = 0; i < selectedPhotos.length; i++) {
+                const photo = selectedPhotos[i];
+                
+                // Update progress
+                showStatus(`Uploading photo ${i + 1} of ${selectedPhotos.length}...`, 'loading');
+                submitBtn.innerHTML = `<span class="spinner"></span> Photo ${i + 1}/${selectedPhotos.length}`;
+                
+                // Upload photo
+                const photoUrl = await uploadPhotoToDrive(photo);
+                photoUrls.push(photoUrl);
+            }
+        }
+        
+        // Step 2: Submit form with photo URLs
+        submitBtn.innerHTML = '<span class="spinner"></span> Submitting...';
+        showStatus('Saving form data...', 'loading');
+        
         const formData = {
+            action: 'submitForm',
             jobId: document.getElementById('jobSite').value,
             crewMemberId: document.getElementById('crewMember').value,
             tradeTaskType: document.getElementById('tradeType').value,
@@ -286,12 +306,10 @@ async function submitForm() {
             materialsUsed: document.getElementById('materialsUsed').value,
             materialsNeeded: document.getElementById('materialsNeeded').value,
             weatherConditions: document.getElementById('weatherConditions').value,
-            photos: selectedPhotos, // Include photos
+            photoUrls: photoUrls, // Array of {url, name} objects
             deviceInfo: getDeviceInfo()
         };
         
-        // Submit to Apps Script
-        // Use text/plain to avoid CORS preflight
         const response = await fetch(APPS_SCRIPT_URL, {
             method: 'POST',
             headers: {
@@ -311,7 +329,8 @@ async function submitForm() {
         }
         
         // Success!
-        showStatus('✓ Report submitted successfully!', 'success', 5000);
+        const photoMsg = result.photosRecorded > 0 ? ` with ${result.photosRecorded} photo(s)` : '';
+        showStatus(`✓ Report submitted successfully${photoMsg}!`, 'success', 5000);
         
         // Reset form
         form.reset();
@@ -325,12 +344,49 @@ async function submitForm() {
         
     } catch (error) {
         console.error('Form submission error:', error);
-        showStatus('✗ Error submitting report. Please try again.', 'error', 5000);
+        const errorMsg = error.message || 'Unknown error';
+        showStatus(`✗ Error: ${errorMsg}`, 'error', 8000);
     } finally {
         // Re-enable submit button
         submitBtn.disabled = false;
         submitBtn.textContent = 'Submit Report';
     }
+}
+
+// Upload single photo to Drive
+async function uploadPhotoToDrive(photo) {
+    const uploadData = {
+        action: 'uploadPhoto',
+        photo: {
+            data: photo.data,
+            name: photo.name,
+            timestamp: photo.timestamp
+        }
+    };
+    
+    const response = await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'text/plain'
+        },
+        body: JSON.stringify(uploadData)
+    });
+    
+    if (!response.ok) {
+        throw new Error(`Photo upload failed: ${response.status}`);
+    }
+    
+    const result = await response.json();
+    
+    if (!result.success) {
+        throw new Error(result.error || 'Photo upload failed');
+    }
+    
+    return {
+        url: result.driveUrl,
+        name: result.fileName,
+        fileId: result.fileId
+    };
 }
 
 // ============================================
@@ -409,10 +465,10 @@ async function compressImage(file) {
                 const canvas = document.createElement('canvas');
                 const ctx = canvas.getContext('2d');
                 
-                // Calculate new dimensions (max 1200px width)
+                // Calculate new dimensions (max 800px width for better mobile performance)
                 let width = img.width;
                 let height = img.height;
-                const maxWidth = 1200;
+                const maxWidth = 800;
                 
                 if (width > maxWidth) {
                     height = (height * maxWidth) / width;
@@ -425,8 +481,8 @@ async function compressImage(file) {
                 // Draw and compress
                 ctx.drawImage(img, 0, 0, width, height);
                 
-                // Convert to base64 (JPEG, 0.8 quality)
-                const compressedBase64 = canvas.toDataURL('image/jpeg', 0.8);
+                // Convert to base64 (JPEG, 0.6 quality for smaller size)
+                const compressedBase64 = canvas.toDataURL('image/jpeg', 0.6);
                 
                 resolve({
                     name: file.name,
